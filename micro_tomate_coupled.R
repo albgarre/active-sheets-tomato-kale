@@ -57,72 +57,72 @@ aa <- d_tomate %>%
   split(.$c)
 
 models <- list(
-  
+
   fit_coupled_growth(
     mode = "one_step",
-    aa[[1]], 
+    aa[[1]],
     c(Tmin = 2, b = .04, logN0 = 1, logNmax = 5),
     known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[2]], 
+    aa[[2]],
     # make_guess_coupled(aa[[2]], mode = "one_step")
     c(Tmin = 2, b = .04, logN0 = 1, logNmax = 5),
     known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[3]], 
+    aa[[3]],
     make_guess_coupled(aa[[3]], mode = "one_step")
     # c(Tmin = 2, b = .04, logN0 = 1, logNmax = 5),
     # known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[4]], 
+    aa[[4]],
     make_guess_coupled(aa[[4]], mode = "one_step")
     # c(Tmin = 2, b = .04, logN0 = 1, logNmax = 5),
     # known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[5]], 
+    aa[[5]],
     # make_guess_coupled(aa[[5]], mode = "one_step")
     c(Tmin = 5, b = 0.05, logN0 = 1),
     known = c(logC0 = 8, logNmax = 7)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[6]], 
+    aa[[6]],
     # make_guess_coupled(aa[[6]], mode = "one_step")
     c(Tmin = 5, b = 0.05, logN0 = 1, logNmax = 7),
     known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[7]], 
+    aa[[7]],
     # make_guess_coupled(aa[[7]], mode = "one_step")
     c(Tmin = 1, b = 0.05, logN0 = 1, logNmax = 6),
     known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[8]], 
+    aa[[8]],
     # make_guess_coupled(aa[[8]], mode = "one_step")
     c(Tmin = 1, b = 0.05, logN0 = 1, logNmax = 6),
     known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[9]], 
+    aa[[9]],
     # make_guess_coupled(aa[[9]], mode = "one_step")
     c(Tmin = 1, b = 0.05, logN0 = 1, logNmax = 4),
     known = c(logC0 = 8)
   ),
   fit_coupled_growth(
     mode = "one_step",
-    aa[[10]], 
+    aa[[10]],
     # make_guess_coupled(aa[[10]], mode = "one_step")
     c(Tmin = 1, b = 0.05, logN0 = 1, logNmax = 6),
     known = c(logC0 = 8)
@@ -131,9 +131,9 @@ models <- list(
 
 names(models) <- names(aa)
 
-## 
+##
 
-models %>% 
+models %>%
   map(., ~ summary(.)$par) %>%
   map(., ~ as_tibble(., rownames = "par")) %>%
   imap_dfr(., ~ mutate(.x, cond = .y)) %>%
@@ -145,7 +145,7 @@ models %>%
 ## Table 1.A
 
 
-models %>% 
+models %>%
   map(., ~ summary(.)$par) %>%
   map(., ~ as_tibble(., rownames = "par")) %>%
   imap_dfr(., ~ mutate(.x, cond = .y)) %>%
@@ -175,7 +175,7 @@ p <- models %>%
                       "enterobacteria", "Enterobacteria",
                       "levaduras", "Yeast",
                       "mohos", "Molds",
-                      "psicrofilos", "psychrophiles")
+                      "psicrofilos", "Psychrophiles")
             ) %>%
   mutate(Packaging = ifelse(Packaging == "Activo", "Active", "Conventional")) %>%
   ggplot() +
@@ -185,7 +185,7 @@ p <- models %>%
   # facet_wrap("bug_name", scales = "free") +
   labs(x = "Storage time (h)",
        linetype = "Temperature (ºC)",
-       y = "Microbial concentration (log CFU/g)") +
+       y = "Microbial load (log CFU/g)") +
   # ggthemes::theme_few(base_size = 14) +
   theme_bw(base_size = 14) +
   scale_linetype_manual(values = c(3,1,2)) +
@@ -197,13 +197,13 @@ ggsave(p, filename = "Figure_1.png", width = 12, height = 8)
 
 ## Supp. Figure 1
 
-p <- models %>% 
+p <- models %>%
   imap(~ plot(.x) + ggtitle(.y)) %>%
   ggarrange(plotlist = .)
 
 ggsave(p, filename = "supp_Figure_1.png", width = 16, height = 8, bg = "white")
 
-  
+
 
 
 
